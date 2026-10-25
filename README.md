@@ -32,6 +32,11 @@ python -m http.server 8000 --directory dist
 
 Open the displayed local URL, select **Start sound**, and keep the initial output level low—especially when using headphones.
 
+## Demo
+
+[The demo page](https://akinori-ito.github.io/vocal-synth-site/index.html)  
+
+
 ## How the Model Works
 
 The signal path is:
@@ -45,10 +50,10 @@ The cavity controls are designed as an intuitive teaching model. Internally, the
 ## Project Structure
 
 ```text
-dist/
-├── index.html    # Application interface and SVG diagram
-├── app.js        # Audio synthesis and interaction logic
-├── styles.css    # Main layout and visual design
+dist/  
+├── index.html    # Application interface and SVG diagram  
+├── app.js        # Audio synthesis and interaction logic  
+├── styles.css    # Main layout and visual design  
 └── diagram.css   # Dynamic vocal-tract styling
 ```
 
@@ -58,6 +63,6 @@ No build step is required. Edit the files under `dist/`, reload the page, and te
 
 Keep changes dependency-free unless a build system provides a clear benefit. Test all vowel presets, sliders, sound start/stop behavior, narrow-screen layout, and reduced-motion behavior before submitting a pull request. Describe audible changes clearly and include screenshots for interface modifications.
 
-## License
+##   
 
-No license has been selected yet. Add a `LICENSE` file before distributing or accepting external contributions.
+ 
