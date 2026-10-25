@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101511">
+  <title>Vowel Lab — Real-time vocal tract synthesizer</title>
+  <meta name="description" content="Explore how a vocal source and two resonating cavities shape vowel sounds in real time.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="diagram.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Interactive acoustics</p>
+        <h1>Vowel <em>Lab</em></h1>
+        <p class="lede">Shape a voice by changing the source, the two cavities, and the opening at the lips.</p>
+      </div>
+      <button id="power" class="power" type="button" aria-pressed="false">
+        <span class="power-dot"></span><span class="power-label">Start sound</span>
+      </button>
+    </header>
+
+    <section class="workspace" aria-label="Vowel synthesizer">
+      <div class="visual-panel">
+        <div class="signal-head">
+          <div><span class="step">01</span><span>Acoustic path</span></div>
+          <span id="status" class="status">Audio off</span>
+        </div>
+
+        <div class="tract-wrap">
+          <svg id="tract" viewBox="0 0 900 390" role="img" aria-labelledby="tractTitle tractDesc">
+            <title id="tractTitle">Adjustable vocal tract model</title>
+            <desc id="tractDesc">A fixed source feeds a variable laryngeal cavity, a fixed pharynx, and rear and front oral cavities ending in an adjustable mouth opening.</desc>
+            <defs><linearGradient id="cavityFill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dff4e7"/><stop offset="1" stop-color="#cbe3d4"/></linearGradient><filter id="softGlow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <g class="diagram-source" aria-hidden="true"><line x1="42" y1="195" x2="105" y2="195"/><path d="M42 175v40M52 175v40"/><text x="47" y="245">FIXED SOURCE</text></g>
+            <g class="cavity-shape"><rect id="larynxRect" rx="4"/><text id="larynxLabel">LARYNGEAL CAVITY</text></g>
+            <g class="pharynx-shape"><rect x="400" y="140" width="100" height="110" rx="4"/><text x="450" y="282">PHARYNX</text><text class="fixed-note" x="450" y="300">FIXED</text></g>
+            <g class="cavity-shape rear-shape"><rect id="rearRect"/><text id="rearLabel">REAR ORAL</text></g>
+            <g class="cavity-shape front-shape"><rect id="frontFill" class="mouth-fill"/><path id="frontPath"/><text id="frontLabel">FRONT ORAL</text></g>
+            <g class="opening-guide"><line id="openingLine"/><text id="openingLabel">64% OPEN</text></g>
+            <path class="centerline" d="M105 195H840"/><circle class="signal-pulse" cx="105" cy="195" r="6"/>
+          </svg>
+        </div>
+
+        <canvas id="scope" aria-label="Live output waveform"></canvas>
+        <div class="scope-meta"><span>OUTPUT WAVEFORM</span><span id="frequencyReadout">120 Hz</span></div>
+      </div>
+
+      <aside class="controls-panel">
+        <div class="section-title"><span class="step">02</span><span>Shape the voice</span></div>
+
+        <div class="preset-block">
+          <span class="control-label">Vowel presets</span>
+          <div class="presets" role="group" aria-label="Vowel presets">
+            <button type="button" data-vowel="a">A <small>father</small></button>
+            <button type="button" data-vowel="e">E <small>bed</small></button>
+            <button type="button" data-vowel="i">I <small>machine</small></button>
+            <button type="button" data-vowel="o">O <small>thought</small></button>
+            <button type="button" data-vowel="u">U <small>goose</small></button>
+          </div>
+        </div>
+
+        <div class="control-group source-group">
+          <div class="group-heading"><span>Vocal-cord source</span><output id="pitchOut">120 Hz</output></div>
+          <label for="pitch">Pitch</label>
+          <input id="pitch" type="range" min="70" max="300" value="120" step="1">
+          <div class="range-ends"><span>Low</span><span>High</span></div>
+          <label for="source">Source character</label>
+          <input id="source" type="range" min="0" max="100" value="58" step="1">
+          <div class="range-ends"><span>Soft</span><span>Bright</span></div>
+        </div>
+
+        <div class="control-group">
+          <div class="group-heading"><span>Laryngeal cavity</span><output id="larynxOut">Balanced</output></div>
+          <label for="larynx">Volume</label>
+          <input id="larynx" type="range" min="0" max="100" value="54" step="1">
+          <div class="range-ends"><span>Large</span><span>Small</span></div>
+        </div>
+
+        <div class="control-group">
+          <div class="group-heading"><span>Rear oral cavity</span><output id="rearOut">72%</output></div>
+          <label for="rear">Volume</label>
+          <input id="rear" type="range" min="0" max="100" value="72" step="1">
+          <div class="range-ends"><span>Large</span><span>Small</span></div>
+        </div>
+
+        <div class="control-group">
+          <div class="group-heading"><span>Front oral cavity</span><output id="frontOut">28%</output></div>
+          <label for="front">Volume</label>
+          <input id="front" type="range" min="0" max="100" value="28" step="1">
+          <div class="range-ends"><span>Large</span><span>Small</span></div>
+        </div>
+
+        <div class="control-group">
+          <div class="group-heading"><span>Mouth opening</span><output id="openingOut">64%</output></div>
+          <label for="opening">Aperture</label>
+          <input id="opening" type="range" min="5" max="100" value="64" step="1">
+          <div class="range-ends"><span>Closed</span><span>Open</span></div>
+        </div>
+
+        <div class="level-row">
+          <label for="level">Output</label>
+          <input id="level" type="range" min="0" max="100" value="62">
+          <output id="levelOut">62%</output>
+        </div>
+        <p class="hint">Use headphones or keep the output low when experimenting.</p>
+      </aside>
+    </section>
+
+    <footer><span>Source → voice character → rear oral → front oral → radiation</span><span>Web Audio · real-time synthesis</span></footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

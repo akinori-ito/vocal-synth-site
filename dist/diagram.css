@@ -1,0 +1,47 @@
+.tract-wrap svg {
+  width: 96%;
+  height: 94%;
+  overflow: visible;
+}
+
+.cavity-shape rect,
+.cavity-shape path,
+.pharynx-shape rect {
+  fill: url(#cavityFill);
+  stroke: var(--ink);
+  stroke-width: 4;
+  vector-effect: non-scaling-stroke;
+  transition: d .12s ease, x .12s ease, y .12s ease, width .12s ease, height .12s ease;
+}
+
+.pharynx-shape rect { fill: #f0cda9; }
+.cavity-shape .mouth-fill { stroke: none; }
+.cavity-shape #frontPath { fill: none; }
+.cavity-shape text,
+.pharynx-shape text,
+.diagram-source text,
+.opening-guide text {
+  fill: #465047;
+  font: 700 13px ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: .08em;
+  text-anchor: middle;
+}
+.pharynx-shape .fixed-note { fill: #8a6d52; font-size: 10px; }
+.diagram-source line,
+.diagram-source path { fill: none; stroke: var(--ink); stroke-width: 4; }
+.centerline { fill: none; opacity: .55; stroke: #579b73; stroke-dasharray: 8 10; stroke-width: 2; }
+.opening-guide line { stroke: var(--orange); stroke-dasharray: 4 5; stroke-width: 2; }
+.opening-guide text { fill: #bd5a37; font-size: 10px; }
+.signal-pulse { fill: var(--orange); opacity: 0; }
+.playing .signal-pulse { animation: tract-travel 2.2s linear infinite; filter: url(#softGlow); opacity: 1; }
+
+@keyframes tract-travel {
+  0% { cx: 105; opacity: 0; }
+  10%, 88% { opacity: 1; }
+  100% { cx: 850; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cavity-shape rect, .cavity-shape path { transition: none; }
+  .playing .signal-pulse { animation: none; }
+}

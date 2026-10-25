@@ -1,0 +1,23 @@
+# Operating-system and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp
+*~
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Optional local tooling
+node_modules/
+.cache/
+coverage/
+
+# Local hosting metadata and packaged artifacts
+.openai/
+*.tar.gz
+*.zip
